@@ -1,3 +1,5 @@
+package br.meujogo.models
+
 class Jogador {
 
     fun pedirNomes(): Pair<String, String> {
