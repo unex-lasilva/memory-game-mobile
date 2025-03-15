@@ -1,5 +1,6 @@
 import kotlin.system.exitProcess
 
+
 fun main() {
     println()
 
@@ -68,9 +69,16 @@ fun pontuacao() {
 }
 
 fun regras() {
-    //JOSÉ IMPLEMENTAR
-    // AQUI TU VAI PRINTAR AS REGRAS, PEGA ELA DO PDF QUE TA NO BLACKBOARD
-    println("Regras:")
+    println("println(\"Regras:\")")
+    println("1.Cada participante deve ter atribuído a si uma cor (vermelho ou azul) no início do jogo.")
+    println("2. Todo participante deve ter um nome registrado. Senão, o nome padrão“PARTICIPANTE01” e “PARTICIPANTE02” devem ser atribuídos a cada um das(os) participantes.")
+    println("3. Cada participante possui uma pontuação atrelada a si.")
+    println("4. Se a(o) participante encontrar um par de cartas com fundo amarelo, fatura 1 ponto.")
+    println("5. Se a(o) participante encontrar um par de cartas com o fundo da sua cor, fatura 5 pontos.")
+    println("6. Se a(o) participante encontrar um par de cartas com o fundo da cor de seu adversário e errar, perde 2 pontos. Porém, se acertar, ganha apenas 1 ponto.")
+    println("7. A(o) participante não pode ter pontuação negativa. Se ela(ele) perder mais pontos do que possui, ficará com a pontuação zerada.")
+    println("8. Se a(o) participante encontrar uma carta com o fundo preto e errar o seu par, perde o jogo, mesmo que tenha a pontuação superior à da(o) outra(o) participante. Mas se acertar, ganha o jogo.")
+    println()
 }
 
 fun sair() {
@@ -179,17 +187,212 @@ private fun genarateLista(tamanho: Int): Array<Carta> {
         )
 
         6 -> arrayOf(
-            // AQUI TU VAI PEGAR LOGICA DO CÓDIGO DE CIMA, NO PDF TEM EXPLICANDO COMO É A LOGICA DAS CARTAS
-            //JOSÉ IMPLEMENTAR
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R05"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B05"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y08"),
+            Carta(Cor.YELLOW, "Y08"),
         )
 
         8 -> arrayOf(
-            //JOSÉ IMPLEMENTAR
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B05"),
+            Carta(Cor.BLUE, "B05"),
+            Carta(Cor.BLUE, "B06"),
+            Carta(Cor.BLUE, "B06"),
+            Carta(Cor.BLUE, "B07"),
+            Carta(Cor.BLUE, "B07"),
+            Carta(Cor.BLUE, "B08"),
+            Carta(Cor.BLUE, "B08"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R05"),
+            Carta(Cor.RED, "R05"),
+            Carta(Cor.RED, "R06"),
+            Carta(Cor.RED, "R06"),
+            Carta(Cor.RED, "R07"),
+            Carta(Cor.RED, "R07"),
+            Carta(Cor.RED, "R08"),
+            Carta(Cor.RED, "R08"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y08"),
+            Carta(Cor.YELLOW, "Y08"),
+            Carta(Cor.YELLOW, "Y09"),
+            Carta(Cor.YELLOW, "Y09"),
+            Carta(Cor.YELLOW, "Y10"),
+            Carta(Cor.YELLOW, "Y10"),
+            Carta(Cor.YELLOW, "Y10"),
+            Carta(Cor.YELLOW, "Y11"),
+            Carta(Cor.YELLOW, "Y11"),
+            Carta(Cor.YELLOW, "Y12"),
+            Carta(Cor.YELLOW, "Y12"),
+            Carta(Cor.YELLOW, "Y13"),
+            Carta(Cor.YELLOW, "Y13"),
+            Carta(Cor.YELLOW, "Y14"),
+            Carta(Cor.YELLOW, "Y15"),
+            Carta(Cor.YELLOW, "Y15")
         )
-        // Caso tamanho seja 10
+
         else -> arrayOf(
-            //JOSÉ IMPLEMENTAR
-        )
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.BLACK, "K01"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B01"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B02"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B03"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B04"),
+            Carta(Cor.BLUE, "B05"),
+            Carta(Cor.BLUE, "B05"),
+            Carta(Cor.BLUE, "B06"),
+            Carta(Cor.BLUE, "B06"),
+            Carta(Cor.BLUE, "B07"),
+            Carta(Cor.BLUE, "B07"),
+            Carta(Cor.BLUE, "B08"),
+            Carta(Cor.BLUE, "B08"),
+            Carta(Cor.BLUE, "B09"),
+            Carta(Cor.BLUE, "B09"),
+            Carta(Cor.BLUE, "B10"),
+            Carta(Cor.BLUE, "B10"),
+            Carta(Cor.BLUE, "B11"),
+            Carta(Cor.BLUE, "B11"),
+            Carta(Cor.BLUE, "B12"),
+            Carta(Cor.BLUE, "B12"),
+            Carta(Cor.BLUE, "B13"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R01"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R02"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R03"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R04"),
+            Carta(Cor.RED, "R05"),
+            Carta(Cor.RED, "R05"),
+            Carta(Cor.RED, "R06"),
+            Carta(Cor.RED, "R06"),
+            Carta(Cor.RED, "R07"),
+            Carta(Cor.RED, "R07"),
+            Carta(Cor.RED, "R08"),
+            Carta(Cor.RED, "R08"),
+            Carta(Cor.RED, "R09"),
+            Carta(Cor.RED, "R09"),
+            Carta(Cor.RED, "R10"),
+            Carta(Cor.RED, "R10"),
+            Carta(Cor.RED, "R11"),
+            Carta(Cor.RED, "R11"),
+            Carta(Cor.RED, "R12"),
+            Carta(Cor.RED, "R12"),
+            Carta(Cor.RED, "R13"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y01"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y02"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y03"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y04"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y05"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y06"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y07"),
+            Carta(Cor.YELLOW, "Y08"),
+            Carta(Cor.YELLOW, "Y08"),
+            Carta(Cor.YELLOW, "Y09"),
+            Carta(Cor.YELLOW, "Y09"),
+            Carta(Cor.YELLOW, "Y10"),
+            Carta(Cor.YELLOW, "Y10"),
+            Carta(Cor.YELLOW, "Y11"),
+            Carta(Cor.YELLOW, "Y11"),
+            Carta(Cor.YELLOW, "Y12"),
+            Carta(Cor.YELLOW, "Y12"),
+            Carta(Cor.YELLOW, "Y13"),
+            Carta(Cor.YELLOW, "Y13"),
+            Carta(Cor.YELLOW, "Y14"),
+            Carta(Cor.YELLOW, "Y14"),
+            Carta(Cor.YELLOW, "Y15"),
+            Carta(Cor.YELLOW, "Y15"),
+            Carta(Cor.YELLOW, "Y16"),
+            Carta(Cor.YELLOW, "Y16"),
+            Carta(Cor.YELLOW, "Y17"),
+            Carta(Cor.YELLOW, "Y17"),
+            Carta(Cor.YELLOW, "Y18"),
+            Carta(Cor.YELLOW, "Y18"),
+            Carta(Cor.YELLOW, "Y19"),
+            Carta(Cor.YELLOW, "Y19"),
+            Carta(Cor.YELLOW, "Y20"),
+            Carta(Cor.YELLOW, "Y20"),
+            Carta(Cor.YELLOW, "Y21"),
+            Carta(Cor.YELLOW, "Y21"),
+            Carta(Cor.YELLOW, "Y22"),
+            Carta(Cor.YELLOW, "Y22"),
+            Carta(Cor.YELLOW, "Y23"),
+            Carta(Cor.YELLOW, "Y23"),
+            Carta(Cor.YELLOW, "Y24"),
+            Carta(Cor.YELLOW, "Y24"))
     }
 
 }
@@ -281,7 +484,17 @@ private fun validaCarta(linha: Int, coluna: Int, tabuleiro: Tabuleiro): Carta {
 }
 
 fun printTabuleiro(tabuleiro: Tabuleiro) {
-    var textoPrint = "   1    2    3    4\n"
+
+    var textoPrint = ""
+    if (tabuleiro.tamanho == 4) {
+         textoPrint = "   1    2    3    4\n"
+    } else if (tabuleiro.tamanho == 6){
+         textoPrint = "   1    2    3    4    5    6\n"
+    } else if (tabuleiro.tamanho == 8){
+        textoPrint = "   1    2    3    4    5    6    7    8\n"
+    } else if (tabuleiro.tamanho == 10){
+        textoPrint = "   1    2    3    4    5    6    7    8    9    10\n"
+    }
     for (i in 0..<tabuleiro.tamanho) {
         textoPrint += "${i + 1}"
         for (j in 0..<tabuleiro.tamanho) {
