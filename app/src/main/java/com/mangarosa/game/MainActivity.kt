@@ -1,5 +1,6 @@
 package com.mangarosa.game
 
+import HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,16 +14,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mangarosa.game.ui.theme.GameTheme
+import com.mangarosa.game.ui.screens.TabuleiroOptionScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,90 +33,18 @@ class MainActivity : ComponentActivity() {
 
     }
 }
-@Composable
-fun MenuScreen(onOptionSelected: (Int) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "MENU", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = { onOptionSelected(1) }, modifier = Modifier.fillMaxWidth()) {
-            Text("INICIAR")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = { onOptionSelected(2) }, modifier = Modifier.fillMaxWidth()) {
-            Text("PONTUAÇÃO PARTICIPANTES")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = { onOptionSelected(3) }, modifier = Modifier.fillMaxWidth()) {
-            Text("REGRAS DO JOGO")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(onClick = { onOptionSelected(4) }, modifier = Modifier.fillMaxWidth()) {
-            Text("SAIR")
-        }
-    }
-}
-
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
 
+
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") {
-            MenuScreen(onOptionSelected = { option ->
-                when(option) {
-                    1 -> navController.navigate("tabuleiro")
-                    2 -> println("PONTUAÇÃO PARTICIPANTES")
-                    3 -> println("REGRAS DO JOGO")
-                    4 -> println("SAIR")
-                }
-            })
+            HomeScreen()
         }
         composable("tabuleiro") {
-            TabuleiroScreen(onTabuleiroSelected = { tamanho ->
-                println("Tamanho escolhido: $tamanho")
-                // Aqui você pode navegar pra outra tela ou iniciar o jogo
-            })
-        }
-    }
-}
-
-@Composable
-fun TabuleiroScreen(onTabuleiroSelected: (String) -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("DIGITE O TAMANHO DO TABULEIRO:", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(Modifier.height(24.dp))
-
-        Button(onClick = { onTabuleiroSelected("4x4") }, modifier = Modifier.fillMaxWidth()) {
-            Text("1 - 4x4")
-        }
-        Button(onClick = { onTabuleiroSelected("6x6") }, modifier = Modifier.fillMaxWidth()) {
-            Text("2 - 6x6")
-        }
-        Button(onClick = { onTabuleiroSelected("8x8") }, modifier = Modifier.fillMaxWidth()) {
-            Text("3 - 8x8")
-        }
-        Button(onClick = { onTabuleiroSelected("10x10") }, modifier = Modifier.fillMaxWidth()) {
-            Text("4 - 10x10")
+            TabuleiroOptionScreen()
         }
     }
 }
