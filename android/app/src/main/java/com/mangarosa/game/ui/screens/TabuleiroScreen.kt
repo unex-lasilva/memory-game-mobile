@@ -15,10 +15,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -30,6 +33,7 @@ import com.mangarosa.game.models.Cor
 import com.mangarosa.game.models.Participante
 import com.mangarosa.game.models.Rodada
 import com.mangarosa.game.models.Tabuleiro
+import kotlinx.coroutines.launch
 
 
 private fun genarateLista(tamanho: Int): Array<Carta> {
@@ -298,7 +302,8 @@ fun TabuleiroScreen() {
 
     val participante1 = remember { Participante("Caio", 0, Cor.BLUE) }
     val participante2 = remember { Participante("Wagner", 0, Cor.RED) }
-
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val tabuleiro = tabuleiroState.value
 
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -370,7 +375,13 @@ fun TabuleiroScreen() {
                                     if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
                                         println("ERROU! PERDEU A PARTIDA.")
                                         switchParticipante(rodada, participante1, participante2)
-                                        println("PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA")
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
+                                                actionLabel = "Fechar",
+                                                duration = SnackbarDuration.Short
+                                            )
+                                        }
                                         //break;
                                     } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor || rodada.segundaCarta!!.cor != rodada.jogador!!.cor) {
                                         rodada.jogador!!.pontuacao -= 2
