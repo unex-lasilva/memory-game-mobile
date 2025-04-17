@@ -15,14 +15,15 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.unit.dp
 import com.mangarosa.game.navigation.Routes
-
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 @Composable
 fun ParticipantesScreen(
     onNavigate: (String) -> Unit
 ) {
-    val text1 = "";
-    val text2 = "";
+    val text1 = remember { mutableStateOf("") }
+    val text2 = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -36,21 +37,26 @@ fun ParticipantesScreen(
         )
 
         OutlinedTextField(
-            value = text1,
-            onValueChange = { },
+            value = text1.value,
+            onValueChange = { text1.value = it },
             label = { Text("Participante 1") },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
-            value = text2,
-            onValueChange = { },
+            value = text2.value,
+            onValueChange = { text2.value = it },
             label = { Text("Participante 2") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Button(
-            onClick = { onNavigate(Routes.TABULEIRO) },
+            onClick = {
+                // Codifica os nomes e navega
+                val encodedP1 = java.net.URLEncoder.encode(text1.value, "UTF-8")
+                val encodedP2 = java.net.URLEncoder.encode(text2.value, "UTF-8")
+                onNavigate("${Routes.TABULEIRO}/$encodedP1/$encodedP2")
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("CONTINUAR")

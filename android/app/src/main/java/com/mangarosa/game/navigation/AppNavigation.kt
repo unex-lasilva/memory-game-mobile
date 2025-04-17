@@ -25,8 +25,18 @@ fun AppNavigation() {
                 onNavigate = navController::navigate
             )
         }
-        composable(Routes.TABULEIRO) {
-            TabuleiroScreen()
+
+        composable("tabuleiro/{p1}/{p2}") { backStackEntry ->
+                val p1 = backStackEntry.arguments?.getString("p1") ?: ""
+                val p2 = backStackEntry.arguments?.getString("p2") ?: ""
+
+                // Decodifica caso necessário
+                val nome1 = java.net.URLDecoder.decode(p1, "UTF-8")
+                val nome2 = java.net.URLDecoder.decode(p2, "UTF-8")
+
+                TabuleiroScreen(nome1, nome2)
+
+
         }
         composable(Routes.PARTICIPANTE) {
             ParticipantesScreen(
