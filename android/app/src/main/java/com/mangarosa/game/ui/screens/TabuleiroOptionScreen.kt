@@ -31,16 +31,16 @@ fun TabuleiroOptionScreen(
 
         Spacer(Modifier.height(24.dp))
 
-        Button(onClick = { onNavigate(Routes.PARTICIPANTE)  }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { onNavigate("${Routes.PARTICIPANTE}/${4}")  }, modifier = Modifier.fillMaxWidth()) {
             Text("1 - 4x4")
         }
-        Button(onClick = { onNavigate(Routes.PARTICIPANTE) }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { onNavigate("${Routes.PARTICIPANTE}/${6}") }, modifier = Modifier.fillMaxWidth()) {
             Text("2 - 6x6")
         }
-        Button(onClick = { onNavigate(Routes.PARTICIPANTE)  }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { onNavigate("${Routes.PARTICIPANTE}/${8}")  }, modifier = Modifier.fillMaxWidth()) {
             Text("3 - 8x8")
         }
-        Button(onClick = { onNavigate(Routes.PARTICIPANTE) }, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = { onNavigate("${Routes.PARTICIPANTE}/${10}") }, modifier = Modifier.fillMaxWidth()) {
             Text("4 - 10x10")
         }
     }

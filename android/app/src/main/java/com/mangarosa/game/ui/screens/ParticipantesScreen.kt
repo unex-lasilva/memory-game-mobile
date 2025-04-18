@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 
 @Composable
 fun ParticipantesScreen(
+    tamanho : Int,
     onNavigate: (String) -> Unit
 ) {
     val text1 = remember { mutableStateOf("") }
@@ -41,23 +42,30 @@ fun ParticipantesScreen(
         OutlinedTextField(
             value = text1.value,
             onValueChange = { text1.value = it },
-            label = { Text("Participante 1") },
+            label = { Text("Participante Azul") },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = text2.value,
             onValueChange = { text2.value = it },
-            label = { Text("Participante 2") },
+            label = { Text("Participante Vermelho") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Button(
             onClick = {
-                // Codifica os nomes e navega
-                val encodedP1 = java.net.URLEncoder.encode(text1.value, "UTF-8")
-                val encodedP2 = java.net.URLEncoder.encode(text2.value, "UTF-8")
-                onNavigate("${Routes.TABULEIRO}/$encodedP1/$encodedP2")
+                var encodedP1 = java.net.URLEncoder.encode(text1.value, "UTF-8")
+                if (encodedP1 == "") {
+                    encodedP1 = "PARTICIPANTE01"
+                }
+
+                var encodedP2 = java.net.URLEncoder.encode(text2.value, "UTF-8")
+                if (encodedP2 == "") {
+                    encodedP2 = "PARTICIPANTE02"
+                }
+
+                onNavigate("${Routes.TABULEIRO}/$encodedP1/$encodedP2/$tamanho")
             },
             modifier = Modifier.fillMaxWidth()
         ) {

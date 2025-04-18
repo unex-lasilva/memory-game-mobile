@@ -25,18 +25,27 @@ fun AppNavigation() {
                 onNavigate = navController::navigate
             )
         }
-        composable("tabuleiro/{p1}/{p2}") { backStackEntry ->
-                val p1 = backStackEntry.arguments?.getString("p1") ?: ""
-                val p2 = backStackEntry.arguments?.getString("p2") ?: ""
+        composable("tabuleiro/{p1}/{p2}/{tamanho}") { backStackEntry ->
+            val p1 = backStackEntry.arguments?.getString("p1") ?: ""
+            val p2 = backStackEntry.arguments?.getString("p2") ?: ""
+            val tamanho = backStackEntry.arguments?.getString("tamanho") ?:"4"
 
-                // Decodifica caso necessário
-                val nome1 = java.net.URLDecoder.decode(p1, "UTF-8")
-                val nome2 = java.net.URLDecoder.decode(p2, "UTF-8")
 
-                TabuleiroScreen(nome1, nome2)
+            val nome1 = java.net.URLDecoder.decode(p1, "UTF-8")
+            val nome2 = java.net.URLDecoder.decode(p2, "UTF-8")
+
+            TabuleiroScreen(
+                nomeParticipante1 = nome1,
+                nomeParticipante2 = nome2,
+                tamanhoTabuleiro = tamanho.toInt(),
+                onNavigate = navController::navigate
+            )
         }
-        composable(Routes.PARTICIPANTE) {
+        composable("participante/{tamanho}") { backStackEntry ->
+            val tamanho = backStackEntry.arguments?.getString("tamanho") ?: "4";
+
             ParticipantesScreen(
+                tamanho = tamanho.toInt(),
                 onNavigate = navController::navigate
             )
         }
