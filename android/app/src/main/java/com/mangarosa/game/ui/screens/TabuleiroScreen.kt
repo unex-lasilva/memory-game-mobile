@@ -15,7 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -269,7 +271,11 @@ private fun genarateLista(tamanho: Int): Array<Carta> {
 
 }
 
-private fun switchParticipante(rodada: Rodada, participante1: Participante, participante2: Participante) {
+private fun switchParticipante(
+    rodada: Rodada,
+    participante1: Participante,
+    participante2: Participante
+) {
     if (rodada.jogador == participante1) {
         rodada.jogador = participante2
     } else {
@@ -300,6 +306,7 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
         })
     }
 
+
     val participante1 = remember { Participante(nomeParticipante1, 0, Cor.BLUE) }
     val participante2 = remember { Participante(nomeParticipante2, 0, Cor.RED) }
 
@@ -314,121 +321,161 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
     val buttonSize = availableWidth / tabuleiro.tamanho
 
     val rodada = Rodada(participante1)
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Tabuleiro: ${tabuleiro.tamanho}X${tabuleiro.tamanho}",
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Text(
-            text = "Participante 1: ${participante1.nome} - ${participante1.pontuacao} pontos",
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Text(
-            text = "Participante 2: ${participante2.nome} - ${participante2.pontuacao} pontos",
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            maxItemsInEachRow = tabuleiro.tamanho
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { _ ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            tabuleiro.matriz!!.forEachIndexed { index, carta ->
-                val color = when {
-                    carta.virada -> when (carta.cor) {
-                        Cor.BLACK -> ButtonDefaults.buttonColors(containerColor = Color.Black)
-                        Cor.YELLOW -> ButtonDefaults.buttonColors(containerColor = Color.Yellow)
-                        Cor.BLUE -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
-                        Cor.RED -> ButtonDefaults.buttonColors(containerColor = Color.Red)
-                        else -> ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+            Text(
+                text = "Tabuleiro: ${tabuleiro.tamanho}X${tabuleiro.tamanho}",
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Text(
+                text = "Participante Azul: ${participante1.nome} - ${participante1.pontuacao} pontos",
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Text(
+                text = "Participante Vermelho: ${participante2.nome} - ${participante2.pontuacao} pontos",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                maxItemsInEachRow = tabuleiro.tamanho
+            ) {
+                tabuleiro.matriz.forEachIndexed { index, carta ->
+                    val color = when {
+                        carta.virada -> when (carta.cor) {
+                            Cor.BLACK -> ButtonDefaults.buttonColors(containerColor = Color.Black)
+                            Cor.YELLOW -> ButtonDefaults.buttonColors(containerColor = Color.Yellow)
+                            Cor.BLUE -> ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                            Cor.RED -> ButtonDefaults.buttonColors(containerColor = Color.Red)
+                            else -> ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                        }
+
+                        else -> ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
                     }
 
-                    else -> ButtonDefaults.buttonColors(containerColor = Color.DarkGray)
-                }
+                    var labelButton =
+                        "C${(index / tabuleiro.tamanho) + 1}${(index % tabuleiro.tamanho) + 1}"
+                    if (carta.virada) {
+                        labelButton = carta.valor
+                    }
 
-                var labelButton =
-                    "C${(index / tabuleiro.tamanho) + 1}${(index % tabuleiro.tamanho) + 1}"
-                if (carta.virada) {
-                    labelButton = carta.valor
-                }
-
-                Button(
-                    onClick = {
-
-
-                        if (!carta.virada) {
-                            if (rodada.primeiraCarta == null) {
-                                rodada.primeiraCarta = carta;
-                                carta.virada = !carta.virada
-                            } else if (rodada.segundaCarta == null) {
-                                rodada.segundaCarta = carta;
-                                carta.virada = !carta.virada
-                            }
-                            if (rodada.primeiraCarta != null && rodada.segundaCarta != null) {
-                                if (rodada.primeiraCarta!!.valor != rodada.segundaCarta!!.valor) {
-                                    if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
-                                        println("ERROU! PERDEU A PARTIDA.")
-                                        switchParticipante(rodada, participante1, participante2)
+                    Button(
+                        onClick = {
+                            if (!carta.virada) {
+                                if (rodada.primeiraCarta == null) {
+                                    rodada.primeiraCarta = carta;
+                                    carta.virada = !carta.virada
+                                } else if (rodada.segundaCarta == null) {
+                                    rodada.segundaCarta = carta;
+                                    carta.virada = !carta.virada
+                                }
+                                if (rodada.primeiraCarta != null && rodada.segundaCarta != null) {
+                                    if (rodada.primeiraCarta!!.valor != rodada.segundaCarta!!.valor) {
+                                        if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
                                             scope.launch {
                                                 snackbarHostState.showSnackbar(
-                                                message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
-                                                actionLabel = "Fechar",
-                                                duration = SnackbarDuration.Short
-                                            )
-                                        }
-                                        //break;
-                                    } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor || rodada.segundaCarta!!.cor != rodada.jogador!!.cor) {
-                                        rodada.jogador!!.pontuacao -= 2
-                                        if (rodada.jogador!!.pontuacao >= 0) {
-                                            println("ERROU! PERDEU 2 PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.")
+                                                    message = "ERROU! PERDEU A PARTIDA.",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                            switchParticipante(rodada, participante1, participante2)
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                            //break;
+                                        } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor || rodada.segundaCarta!!.cor != rodada.jogador!!.cor) {
+                                            rodada.jogador!!.pontuacao -= 2;
+                                            if (rodada.jogador!!.pontuacao >= 0) {
+                                                scope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        message = "ERROU! PERDEU 2 PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
+                                                        duration = SnackbarDuration.Short
+                                                    )
+                                                }
+                                            } else {
+                                                val pontuacao = rodada.jogador!!.pontuacao + 2
+                                                scope.launch {
+                                                    snackbarHostState.showSnackbar(
+                                                        message = "ERROU! PERDEU ${pontuacao} PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
+                                                        duration = SnackbarDuration.Short
+                                                    )
+                                                }
+                                                rodada.jogador!!.pontuacao = 0
+                                            }
                                         } else {
-                                            println("ERROU! PERDEU ${rodada.jogador!!.pontuacao + 2} PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.")
-                                            rodada.jogador!!.pontuacao = 0
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "ERROU! PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
                                         }
+
+                                        clearRodada(rodada)
+                                        switchParticipante(rodada, participante1, participante2)
                                     } else {
-                                        println("ERROU! PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.")
+                                        if (rodada.primeiraCarta!!.cor == Cor.YELLOW) {
+                                            rodada.jogador!!.pontuacao += 1
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "ACERTOU! GANHOU 1 PONTOS. CONTINUE JOGANDO.",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                        } else if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                            //break
+                                        } else if (rodada.primeiraCarta!!.cor == rodada.jogador!!.cor) {
+                                            rodada.jogador!!.pontuacao += 5
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "ACERTOU! GANHOU 5 PONTOS. CONTINUE JOGANDO.",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                        } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor) {
+                                            rodada.jogador!!.pontuacao += 1
+                                            scope.launch {
+                                                snackbarHostState.showSnackbar(
+                                                    message = "ACERTOU! GANHOU 1 PONTOS. CONTINUE JOGANDO.",
+                                                    duration = SnackbarDuration.Short
+                                                )
+                                            }
+                                        }
                                     }
 
-                                    clearRodada(rodada)
-                                    switchParticipante(rodada, participante1, participante2)
-                                } else {
-                                    if (rodada.primeiraCarta!!.cor == Cor.YELLOW) {
-                                        rodada.jogador!!.pontuacao += 1
-                                        println("ACERTOU! GANHOU 1 PONTOS. CONTINUE JOGANDO.")
-                                    } else if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
-                                        println("PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA")
-                                        //break
-                                    } else if (rodada.primeiraCarta!!.cor == rodada.jogador!!.cor) {
-                                        rodada.jogador!!.pontuacao += 5
-                                        println("ACERTOU! GANHOU 5 PONTOS. CONTINUE JOGANDO.")
-                                    } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor) {
-                                        rodada.jogador!!.pontuacao += 1
-                                        println("ACERTOU! GANHOU 1 PONTOS. CONTINUE JOGANDO.")
-                                    }
-
+                                    rodada.primeiraCarta = null
+                                    rodada.segundaCarta = null
                                 }
-
-                                rodada.primeiraCarta = null
-                                rodada.segundaCarta = null
                             }
-                        }
-                    },
-                    modifier = Modifier.size(buttonSize),
-                    shape = RoundedCornerShape(0.dp),
-                    colors = color,
-                    contentPadding = PaddingValues(0.dp)
-                ) {
-                    Text(
-                        text = labelButton,
-                        fontSize = 10.sp
-                    )
+                        },
+                        modifier = Modifier.size(buttonSize),
+                        shape = RoundedCornerShape(0.dp),
+                        colors = color,
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(
+                            text = labelButton,
+                            fontSize = 10.sp
+                        )
+                    }
                 }
             }
         }
