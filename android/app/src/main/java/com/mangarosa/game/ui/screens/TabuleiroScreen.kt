@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,12 +27,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.util.copy
 import com.mangarosa.game.models.Carta
 import com.mangarosa.game.models.Cor
 import com.mangarosa.game.models.Participante
 import com.mangarosa.game.models.Rodada
 import com.mangarosa.game.models.Tabuleiro
+import com.mangarosa.game.navigation.Routes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -297,11 +296,11 @@ private fun clearRodada(rodada: Rodada) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
+fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String, tamanhoTabuleiro: Int, onNavigate: (String) -> Unit) {
     val tabuleiroState = remember {
-        mutableStateOf(Tabuleiro(tamanho = 4).apply {
-            val cartas = genarateLista(tamanho).toMutableList()
-            repeat(tamanho) { cartas.shuffle() }
+        mutableStateOf(Tabuleiro(tamanho = tamanhoTabuleiro).apply {
+            val cartas = genarateLista(tamanhoTabuleiro).toMutableList()
+            repeat(tamanhoTabuleiro) { cartas.shuffle() }
             matriz.addAll(cartas)
         })
     }
@@ -335,11 +334,12 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
                 style = MaterialTheme.typography.headlineMedium
             )
             Text(
-                text = "Participante Azul: ${participante1.nome} - ${participante1.pontuacao} pontos",
-                style = MaterialTheme.typography.bodyLarge
+                text = "Participante Azul: ${participante1.nome}: ${participante1.pontuacao} pontos",
+                style = MaterialTheme.typography.bodyLarge,
+
             )
             Text(
-                text = "Participante Vermelho: ${participante2.nome} - ${participante2.pontuacao} pontos",
+                text = "Participante Vermelho: ${participante2.nome}: ${participante2.pontuacao} pontos",
                 style = MaterialTheme.typography.bodyLarge
             )
 
@@ -372,59 +372,67 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
                         onClick = {
                             if (!carta.virada) {
                                 if (rodada.primeiraCarta == null) {
-                                    rodada.primeiraCarta = carta;
+                                    rodada.primeiraCarta = carta
                                     carta.virada = !carta.virada
                                 } else if (rodada.segundaCarta == null) {
-                                    rodada.segundaCarta = carta;
+                                    rodada.segundaCarta = carta
                                     carta.virada = !carta.virada
                                 }
                                 if (rodada.primeiraCarta != null && rodada.segundaCarta != null) {
                                     if (rodada.primeiraCarta!!.valor != rodada.segundaCarta!!.valor) {
-                                        if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
-                                            scope.launch {
+                                        scope.launch {
+                                            if (rodada.primeiraCarta!!.cor == Cor.BLACK) {
                                                 snackbarHostState.showSnackbar(
                                                     message = "ERROU! PERDEU A PARTIDA.",
                                                     duration = SnackbarDuration.Short
                                                 )
-                                            }
-                                            switchParticipante(rodada, participante1, participante2)
-                                            scope.launch {
+                                                switchParticipante(
+                                                    rodada,
+                                                    participante1,
+                                                    participante2
+                                                )
+
                                                 snackbarHostState.showSnackbar(
                                                     message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
                                                     duration = SnackbarDuration.Short
                                                 )
-                                            }
-                                            //break;
-                                        } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor || rodada.segundaCarta!!.cor != rodada.jogador!!.cor) {
-                                            rodada.jogador!!.pontuacao -= 2;
-                                            if (rodada.jogador!!.pontuacao >= 0) {
-                                                scope.launch {
+                                                delay(1000)
+
+                                                onNavigate(Routes.MENU)
+
+                                            } else if (rodada.primeiraCarta!!.cor != rodada.jogador!!.cor || rodada.segundaCarta!!.cor != rodada.jogador!!.cor) {
+                                                rodada.jogador!!.pontuacao -= 2
+                                                if (rodada.jogador!!.pontuacao >= 0) {
                                                     snackbarHostState.showSnackbar(
                                                         message = "ERROU! PERDEU 2 PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
                                                         duration = SnackbarDuration.Short
                                                     )
-                                                }
-                                            } else {
-                                                val pontuacao = rodada.jogador!!.pontuacao + 2
-                                                scope.launch {
+                                                    delay(1000) // Espera 3 segundos
+                                                } else {
+                                                    val pontuacao = rodada.jogador!!.pontuacao + 2
                                                     snackbarHostState.showSnackbar(
-                                                        message = "ERROU! PERDEU ${pontuacao} PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
+                                                        message = "ERROU! PERDEU $pontuacao PONTOS. PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
                                                         duration = SnackbarDuration.Short
                                                     )
+                                                    delay(1000) // Espera 30 segundos
+
+                                                    rodada.jogador!!.pontuacao = 0
                                                 }
-                                                rodada.jogador!!.pontuacao = 0
-                                            }
-                                        } else {
-                                            scope.launch {
+                                            } else {
                                                 snackbarHostState.showSnackbar(
                                                     message = "ERROU! PASSOU A VEZ PARA OUTRA(O) PARTICIPANTE.",
                                                     duration = SnackbarDuration.Short
                                                 )
+                                                delay(1000)
                                             }
-                                        }
 
-                                        clearRodada(rodada)
-                                        switchParticipante(rodada, participante1, participante2)
+                                            clearRodada(rodada)
+                                            switchParticipante(
+                                                rodada,
+                                                participante1,
+                                                participante2
+                                            )
+                                        }
                                     } else {
                                         if (rodada.primeiraCarta!!.cor == Cor.YELLOW) {
                                             rodada.jogador!!.pontuacao += 1
@@ -440,8 +448,13 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
                                                     message = "PARTICIPANTE: ${rodada.jogador!!.nome} GANHOU A PARTIDA",
                                                     duration = SnackbarDuration.Short
                                                 )
+
+                                                delay(1000);
+
+                                                onNavigate(Routes.MENU);
                                             }
-                                            //break
+
+                                            onNavigate(Routes.MENU)
                                         } else if (rodada.primeiraCarta!!.cor == rodada.jogador!!.cor) {
                                             rodada.jogador!!.pontuacao += 5
                                             scope.launch {
@@ -459,10 +472,10 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
                                                 )
                                             }
                                         }
-                                    }
 
-                                    rodada.primeiraCarta = null
-                                    rodada.segundaCarta = null
+                                        rodada.primeiraCarta = null
+                                        rodada.segundaCarta = null
+                                    }
                                 }
                             }
                         },

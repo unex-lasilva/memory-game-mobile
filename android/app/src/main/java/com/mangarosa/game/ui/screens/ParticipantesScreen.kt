@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 
 @Composable
 fun ParticipantesScreen(
+    tamanho : Int,
     onNavigate: (String) -> Unit
 ) {
     val text1 = remember { mutableStateOf("") }
@@ -63,8 +64,8 @@ fun ParticipantesScreen(
                 if (encodedP2 == "") {
                     encodedP2 = "PARTICIPANTE02"
                 }
-                
-                onNavigate("${Routes.TABULEIRO}/$encodedP1/$encodedP2")
+
+                onNavigate("${Routes.TABULEIRO}/$encodedP1/$encodedP2/$tamanho")
             },
             modifier = Modifier.fillMaxWidth()
         ) {
