@@ -302,6 +302,7 @@ fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
 
     val participante1 = remember { Participante(nomeParticipante1, 0, Cor.BLUE) }
     val participante2 = remember { Participante(nomeParticipante2, 0, Cor.RED) }
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val tabuleiro = tabuleiroState.value

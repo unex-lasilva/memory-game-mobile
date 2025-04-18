@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.unit.dp
 import com.mangarosa.game.navigation.Routes
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 
@@ -24,6 +25,7 @@ fun ParticipantesScreen(
 ) {
     val text1 = remember { mutableStateOf("") }
     val text2 = remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
