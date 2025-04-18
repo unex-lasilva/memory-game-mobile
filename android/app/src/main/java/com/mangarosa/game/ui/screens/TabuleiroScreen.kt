@@ -291,7 +291,7 @@ private fun clearRodada(rodada: Rodada) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TabuleiroScreen() {
+fun TabuleiroScreen(nomeParticipante1: String, nomeParticipante2: String) {
     val tabuleiroState = remember {
         mutableStateOf(Tabuleiro(tamanho = 4).apply {
             val cartas = genarateLista(tamanho).toMutableList()
@@ -300,8 +300,9 @@ fun TabuleiroScreen() {
         })
     }
 
-    val participante1 = remember { Participante("Caio", 0, Cor.BLUE) }
-    val participante2 = remember { Participante("Wagner", 0, Cor.RED) }
+    val participante1 = remember { Participante(nomeParticipante1, 0, Cor.BLUE) }
+    val participante2 = remember { Participante(nomeParticipante2, 0, Cor.RED) }
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val tabuleiro = tabuleiroState.value
